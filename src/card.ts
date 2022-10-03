@@ -8,57 +8,104 @@ export type Card = number;
 type Rank = number;
 type Suit = number;
 
-const rankFromRune = (r: string): Rank => {
-    switch (r.toLowerCase()) {
-        case 'a':
-            return 12;
-        case 'k':
-            return 11;
-        case 'q':
-            return 10;
-        case 'j':
-            return 9;
-        case  't':
-            return 8;
-        case '9':
-            return 7;
-        case '8':
-            return 6;
-        case '7':
-            return 5;
-        case '6':
-            return 4;
-        case '5':
-            return 3;
-        case '4':
-            return 2;
-        case '3':
-            return 1;
-        case '2':
-            return 0;
-        }
-        throw new Error(`Invalid rune ${r}`);
-}
+export const RANK_TWO = 0;
+export const RANK_THREE = 1;
+export const RANK_FOUR = 2;
+export const RANK_FIVE = 3;
+export const RANK_SIX = 4;
+export const RANK_SEVEN = 5;
+export const RANK_EIGHT = 6;
+export const RANK_NINE = 7;
+export const RANK_TEN = 8;
+export const RANK_JACK = 9;
+export const RANK_QUEEN = 10;
+export const RANK_KING = 11;
+export const RANK_ACE = 12;
 
-const suitFromRune = (r: string): Suit => {
-    switch (r.toLowerCase()) {
-        case 's':
-            return 1;
-        case 'h':
-            return 2;
-        case 'd':
-            return 4;
-        case 'c':
-            return 8;
-        }
-        throw new Error(`Invalid rune ${r}`);
+const runeToRank: {[key: string]: Rank | undefined} = {
+    '2': RANK_TWO ,
+    '3': RANK_THREE,
+    '4': RANK_FOUR ,
+    '5': RANK_FIVE ,
+    '6': RANK_SIX ,
+    '7': RANK_SEVEN,
+    '8': RANK_EIGHT,
+    '9': RANK_NINE ,
+    'T': RANK_TEN ,
+    'J': RANK_JACK ,
+    'Q': RANK_QUEEN,
+    'K': RANK_KING ,
+    'A': RANK_ACE,
+}
+const runeToSuit: {[key: string]: Suit | undefined} = {
+    'S': 1 ,
+    'H': 2,
+    'D': 4 ,
+    'C': 8 ,
 }
 
 const toRankAndSuit = (playingCard: PlayingCard) => {
-    return [rankFromRune(playingCard[0]), suitFromRune(playingCard[1])];
+    const rank = runeToRank[playingCard[0]];
+    const suit = runeToSuit[playingCard[1]];
+    if(!suit || rank === undefined) {
+        throw new Error(`Invalid playing card: ${playingCard}`);
+    }
+    return [rank, suit];
 }
 
 export const toCard = (playingCard: PlayingCard): Card => {
     const [rank, suit] = toRankAndSuit(playingCard);
     return 1 << rank << 16 | suit << 12 | rank << 8 | PRIMES[rank];
+}
+
+const rankToRune: {[key: string]: string | undefined} = {
+    '12': 'A',
+    '11': 'K',
+    '10': 'Q',
+    '9': 'J',
+    '8': 'T',
+    '7': '9',
+    '6': '8',
+    '5': '7',
+    '4': '6',
+    '3': '5',
+    '2': '4',
+    '1': '3',
+    '0': '2',
+}
+
+const suitToRune: {[key: string]: string | undefined} = {
+    '8': 'C',
+    '4': 'D',
+    '2': 'H',
+    '1': 'S',
+}
+
+const getCardRank = (card: Card) => {
+    return card >> 8 & 0xf;
+}
+
+const getCardSuit = (card: Card) => {
+    return card >> 12 & 0xf;
+}
+
+export const toPlayingCard = (card: Card): PlayingCard => {
+    const rankRune = rankToRune['' + getCardRank(card)];
+    const suitRune = suitToRune['' + getCardSuit(card)];
+    if (!rankRune || !suitRune) {
+        throw new Error(`Cannot convert Card ${card} to PlayingCard`);
+    }
+    return rankRune + suitRune as PlayingCard;
+}
+
+export const cardCompareDescFn = (c1: Card, c2: Card) => {
+    const r1 = getCardRank(c1);
+    const r2 = getCardRank(c2);
+    if (r1 === r2) {
+        const s1 = getCardSuit(c1);
+        const s2 = getCardSuit(c2);
+        return s2 - s1;
+
+    }
+    return r2 - r1;
 }
