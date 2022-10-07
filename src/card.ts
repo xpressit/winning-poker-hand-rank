@@ -1,4 +1,4 @@
-import { PlayingCard } from "./types";
+import { PlayingCard } from './types';
 
 // primes are the first 13 prime numbers (one per card rank).
 const PRIMES = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41];
@@ -22,43 +22,43 @@ export const RANK_QUEEN = 10;
 export const RANK_KING = 11;
 export const RANK_ACE = 12;
 
-const runeToRank: {[key: string]: Rank | undefined} = {
-    '2': RANK_TWO ,
+const runeToRank: { [key: string]: Rank | undefined } = {
+    '2': RANK_TWO,
     '3': RANK_THREE,
-    '4': RANK_FOUR ,
-    '5': RANK_FIVE ,
-    '6': RANK_SIX ,
+    '4': RANK_FOUR,
+    '5': RANK_FIVE,
+    '6': RANK_SIX,
     '7': RANK_SEVEN,
     '8': RANK_EIGHT,
-    '9': RANK_NINE ,
-    'T': RANK_TEN ,
-    'J': RANK_JACK ,
-    'Q': RANK_QUEEN,
-    'K': RANK_KING ,
-    'A': RANK_ACE,
-}
-const runeToSuit: {[key: string]: Suit | undefined} = {
-    'S': 1 ,
-    'H': 2,
-    'D': 4 ,
-    'C': 8 ,
-}
+    '9': RANK_NINE,
+    T: RANK_TEN,
+    J: RANK_JACK,
+    Q: RANK_QUEEN,
+    K: RANK_KING,
+    A: RANK_ACE,
+};
+const runeToSuit: { [key: string]: Suit | undefined } = {
+    S: 1,
+    H: 2,
+    D: 4,
+    C: 8,
+};
 
 const toRankAndSuit = (playingCard: PlayingCard) => {
     const rank = runeToRank[playingCard[0]];
     const suit = runeToSuit[playingCard[1]];
-    if(!suit || rank === undefined) {
+    if (!suit || rank === undefined) {
         throw new Error(`Invalid playing card: ${playingCard}`);
     }
     return [rank, suit];
-}
+};
 
 export const toCard = (playingCard: PlayingCard): Card => {
     const [rank, suit] = toRankAndSuit(playingCard);
-    return 1 << rank << 16 | suit << 12 | rank << 8 | PRIMES[rank];
-}
+    return ((1 << rank) << 16) | (suit << 12) | (rank << 8) | PRIMES[rank];
+};
 
-const rankToRune: {[key: string]: string | undefined} = {
+const rankToRune: { [key: string]: string | undefined } = {
     '12': 'A',
     '11': 'K',
     '10': 'Q',
@@ -72,22 +72,22 @@ const rankToRune: {[key: string]: string | undefined} = {
     '2': '4',
     '1': '3',
     '0': '2',
-}
+};
 
-const suitToRune: {[key: string]: string | undefined} = {
+const suitToRune: { [key: string]: string | undefined } = {
     '8': 'C',
     '4': 'D',
     '2': 'H',
     '1': 'S',
-}
+};
 
 const getCardRank = (card: Card) => {
-    return card >> 8 & 0xf;
-}
+    return (card >> 8) & 0xf;
+};
 
 const getCardSuit = (card: Card) => {
-    return card >> 12 & 0xf;
-}
+    return (card >> 12) & 0xf;
+};
 
 export const toPlayingCard = (card: Card): PlayingCard => {
     const rankRune = rankToRune['' + getCardRank(card)];
@@ -95,8 +95,8 @@ export const toPlayingCard = (card: Card): PlayingCard => {
     if (!rankRune || !suitRune) {
         throw new Error(`Cannot convert Card ${card} to PlayingCard`);
     }
-    return rankRune + suitRune as PlayingCard;
-}
+    return (rankRune + suitRune) as PlayingCard;
+};
 
 export const cardCompareDescFn = (c1: Card, c2: Card) => {
     const r1 = getCardRank(c1);
@@ -105,7 +105,6 @@ export const cardCompareDescFn = (c1: Card, c2: Card) => {
         const s1 = getCardSuit(c1);
         const s2 = getCardSuit(c2);
         return s2 - s1;
-
     }
     return r2 - r1;
-}
+};

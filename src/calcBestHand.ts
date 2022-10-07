@@ -1,6 +1,6 @@
-import { Card } from "./card";
-import { rankTexasHand, rankShortDeckHand, rankOmahaHand } from "./cardRank";
-import { GameType } from "./types";
+import { Card } from './card';
+import { rankOmahaHand, rankShortDeckHand, rankTexasHand } from './cardRank';
+import { GameType } from './types';
 
 export const calcBestHand = (gameType: GameType, pocketCards: Card[], communityCards: Card[]) => {
     const getHandRanker = () => {
@@ -11,17 +11,17 @@ export const calcBestHand = (gameType: GameType, pocketCards: Card[], communityC
             return rankOmahaHand;
         }
         return rankTexasHand;
-    }
+    };
 
     const rankHand = getHandRanker();
 
     const cards = [...pocketCards, ...communityCards];
 
-    const {rank, madeHand} = rankHand(pocketCards, communityCards);
+    const { rank, madeHand } = rankHand(pocketCards, communityCards);
 
     return {
-        rank, 
-        madeHand, 
-        unused: cards.filter(c => !madeHand.find(mc => mc === c)),
-    }
-}
+        rank,
+        madeHand,
+        unused: cards.filter((c) => !madeHand.find((mc) => mc === c)),
+    };
+};

@@ -1,7 +1,7 @@
 import { calcBestHand } from './calcBestHand';
 import { toCard, toPlayingCard } from './card';
 import { toCombination } from './toCombination';
-import { GameType, PlayingCard, Combination } from './types';
+import { Combination, GameType, PlayingCard } from './types';
 
 type HandRank = {
     rank: number;

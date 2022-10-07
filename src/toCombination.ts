@@ -1,5 +1,19 @@
-import { FLUSH, FOUR_OF_A_KIND, FULL_HOUSE, HIGH_CARD, PAIR, SIXPLUS_FLUSH, SIXPLUS_FULL_HOUSE, STRAIGHT, STRAIGHT_FLUSH, THREE_OF_A_KIND, toFixedSixPlusRank, toFixedTexasRank, TWO_PAIR } from "./cardRank";
-import { Combination, GameType } from "./types";
+import {
+    FLUSH,
+    FOUR_OF_A_KIND,
+    FULL_HOUSE,
+    HIGH_CARD,
+    PAIR,
+    SIXPLUS_FLUSH,
+    SIXPLUS_FULL_HOUSE,
+    STRAIGHT,
+    STRAIGHT_FLUSH,
+    THREE_OF_A_KIND,
+    TWO_PAIR,
+    toFixedSixPlusRank,
+    toFixedTexasRank,
+} from './cardRank';
+import { Combination, GameType } from './types';
 
 export const toCombination = (gameType: GameType, rank: number): Combination => {
     if (gameType === 'short_deck') {
@@ -33,6 +47,7 @@ export const toCombination = (gameType: GameType, rank: number): Combination => 
         }
         return 'Invalid';
     }
+
     const fixedRank = toFixedTexasRank(rank);
 
     if (fixedRank === STRAIGHT_FLUSH) {
@@ -63,4 +78,4 @@ export const toCombination = (gameType: GameType, rank: number): Combination => 
         return 'HighCard';
     }
     return 'Invalid';
-}
+};

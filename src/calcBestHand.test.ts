@@ -1,5 +1,15 @@
 import { toCard } from './card';
-import { FLUSH, PAIR, SIXPLUS_FLUSH, SIXPLUS_FULL_HOUSE, STRAIGHT, STRAIGHT_FLUSH, toFixedSixPlusRank, toFixedTexasRank, TWO_PAIR } from './cardRank';
+import {
+    FLUSH,
+    PAIR,
+    SIXPLUS_FLUSH,
+    SIXPLUS_FULL_HOUSE,
+    STRAIGHT,
+    STRAIGHT_FLUSH,
+    TWO_PAIR,
+    toFixedSixPlusRank,
+    toFixedTexasRank,
+} from './cardRank';
 import { calcBestHand } from './calcBestHand';
 
 test.each([

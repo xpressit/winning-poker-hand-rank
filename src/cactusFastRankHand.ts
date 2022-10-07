@@ -1,4 +1,4 @@
-import { Card } from "./card";
+import { Card } from './card';
 
 // prettier-ignore
 const fastFlushes = [
@@ -1402,9 +1402,9 @@ export const cactusFastRankHand = (hand: [Card, Card, Card, Card, Card]) => {
     }
 
     let u = 0xe91aaa35 + (((c0 & 0xff) * (c1 & 0xff) * (c2 & 0xff) * (c3 & 0xff) * (c4 & 0xff)) | 0); // 3919383360 +
-    u = (u ^ (u >>> 16)); // 3919438557 -
+    u = u ^ (u >>> 16); // 3919438557 -
     u += u << 8; // 2273361885
     u ^= u >>> 4; // 2415440928
-	// u - 2127684640
+    // u - 2127684640
     return hash[((u + (u << 2)) >>> 19) ^ (hashAdjust[(u >>> 8) & 0x1ff] | 0)];
 };

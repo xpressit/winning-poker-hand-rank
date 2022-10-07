@@ -1,7 +1,7 @@
 import { cactusFastRankHand } from './cactusFastRankHand';
 import { Card } from './card';
 
-type RankerFunc = (hand: [Card,Card,Card,Card,Card]) => number;
+type RankerFunc = (hand: [Card, Card, Card, Card, Card]) => number;
 
 export const STRAIGHT_FLUSH = 10;
 export const FOUR_OF_A_KIND = 166;
@@ -44,8 +44,8 @@ const t7c5 = [
 
 export type HandRank = {
     rank: number;
-    madeHand: [Card, Card, Card, Card, Card]
-}
+    madeHand: [Card, Card, Card, Card, Card];
+};
 
 const rank567cardHand = (hand: Card[], f: RankerFunc = cactusFastRankHand): HandRank => {
     if (hand.length === 5) {
@@ -68,9 +68,9 @@ const rank567cardHand = (hand: Card[], f: RankerFunc = cactusFastRankHand): Hand
         ];
 
         const sortedHands = possibleHands
-            .map((hand) => ({
-                rank: f(hand),
-                madeHand: hand,
+            .map((h) => ({
+                rank: f(h),
+                madeHand: h,
             }))
             .sort((a, b) => a.rank - b.rank);
 
@@ -104,7 +104,6 @@ const rank567cardHand = (hand: Card[], f: RankerFunc = cactusFastRankHand): Hand
 
     throw new Error(`Hand ranker doesn't support ${hand.length} cards`);
 };
-
 
 export const toFixedTexasRank = (r: number) => {
     if (r <= STRAIGHT_FLUSH) {
@@ -169,7 +168,7 @@ export const toFixedSixPlusRank = (r: number) => {
 };
 
 export const rankTexasHand = (pocket: Card[], board: Card[]): HandRank => {
-    return rank567cardHand([...pocket, ...board], cactusFastRankHand)
+    return rank567cardHand([...pocket, ...board], cactusFastRankHand);
 };
 
 export const convertToSixPlusHandRank = (handRank: number): number => {
@@ -184,14 +183,14 @@ export const convertToSixPlusHandRank = (handRank: number): number => {
 
     if (fixedRank === FULL_HOUSE) {
         handRank = handRank - FOUR_OF_A_KIND + 166 + 1277;
-    } else if(fixedRank === FLUSH) {
+    } else if (fixedRank === FLUSH) {
         handRank = handRank - FULL_HOUSE + 166;
     }
     return handRank;
-}
+};
 
 export const rankShortDeckHand = (pocket: Card[], board: Card[]): HandRank => {
-    const f = (hand: [Card,Card,Card,Card,Card]) => {
+    const f = (hand: [Card, Card, Card, Card, Card]) => {
         const handRank = cactusFastRankHand(hand);
         return convertToSixPlusHandRank(handRank);
     };
@@ -218,7 +217,7 @@ const t5c3 = [
     [1, 2, 3, 0, 4],
     [1, 2, 4, 0, 3],
     [1, 3, 4, 0, 2],
-    [2, 3, 4, 0, 1]
+    [2, 3, 4, 0, 1],
 ];
 
 export const rankOmahaHand = (pocket: Card[], board: Card[]): HandRank => {
@@ -226,9 +225,15 @@ export const rankOmahaHand = (pocket: Card[], board: Card[]): HandRank => {
     let bestRank = INVALID;
 
     for (let i = 0; i < 6; i++) {
-		for (let j = 0; j < 10; j++) {
-            const hand: [Card, Card, Card, Card, Card] = [pocket[t4c2[i][0]], pocket[t4c2[i][1]], board[t5c3[j][0]], board[t5c3[j][1]], board[t5c3[j][2]]];
-            
+        for (let j = 0; j < 10; j++) {
+            const hand: [Card, Card, Card, Card, Card] = [
+                pocket[t4c2[i][0]],
+                pocket[t4c2[i][1]],
+                board[t5c3[j][0]],
+                board[t5c3[j][1]],
+                board[t5c3[j][2]],
+            ];
+
             const rank = cactusFastRankHand(hand);
             if (rank < bestRank) {
                 bestHand = hand;
@@ -239,6 +244,6 @@ export const rankOmahaHand = (pocket: Card[], board: Card[]): HandRank => {
 
     return {
         rank: bestRank,
-        madeHand: bestHand
+        madeHand: bestHand,
     };
 };
