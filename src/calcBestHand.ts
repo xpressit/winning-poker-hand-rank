@@ -1,25 +1,27 @@
-import { Card, cardCompareDescFn, RANK_FIVE, RANK_NINE } from "./card";
-import { rankTexasHand, rankShortDeckHand, toFixedTexasRank, STRAIGHT_FLUSH } from "./cardRank";
+import { Card } from "./card";
+import { rankTexasHand, rankShortDeckHand, rankOmahaHand } from "./cardRank";
 import { GameType } from "./types";
 
-const calcOmahaBestHand = (_pocketCards: Card[], _communityCards: Card[]) => {
-    // TODO: implement
-    throw new Error('Not implemented');
-} 
-
 export const calcBestHand = (gameType: GameType, pocketCards: Card[], communityCards: Card[]) => {
-    if (gameType === 'omaha') {
-        return calcOmahaBestHand(pocketCards, communityCards);
+    const getHandRanker = () => {
+        if (gameType === 'short_deck') {
+            return rankShortDeckHand;
+        }
+        if (gameType === 'omaha') {
+            return rankOmahaHand;
+        }
+        return rankTexasHand;
     }
-    const rankHand = gameType === 'short_deck' ? rankShortDeckHand : rankTexasHand;
 
-    const hand = [...pocketCards, ...communityCards];
+    const rankHand = getHandRanker();
 
-    const {rank, madeHand} = rankHand(hand);
+    const cards = [...pocketCards, ...communityCards];
+
+    const {rank, madeHand} = rankHand(pocketCards, communityCards);
 
     return {
         rank, 
         madeHand, 
-        unused: hand.filter(c => !madeHand.find(mc => mc === c)),
+        unused: cards.filter(c => !madeHand.find(mc => mc === c)),
     }
 }

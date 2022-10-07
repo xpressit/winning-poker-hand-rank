@@ -54,7 +54,8 @@ export type PlayingCard =
 
 export type GameType = 'texas' | 'short_deck' | 'omaha';
 
-export type Rank =
+export type Combination =
+    | 'RoyalFlush'
     | 'StraightFlush'
     | 'FourOfAKind'
     | 'FullHouse'
@@ -63,6 +64,6 @@ export type Rank =
     | 'ThreeOfAKind'
     | 'TwoPair'
     | 'Pair'
-    | 'Nothing'
     | 'HighCard'
+    | 'Nothing'
     | 'Invalid';
