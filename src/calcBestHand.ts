@@ -1,5 +1,5 @@
 import { Card, cardCompareDescFn, RANK_FIVE, RANK_NINE } from "./card";
-import { rankTexasHand, rankShortDeckHand, toFixedRank, STRAIGHT_FLUSH } from "./cardRank";
+import { rankTexasHand, rankShortDeckHand, toFixedTexasRank, STRAIGHT_FLUSH } from "./cardRank";
 import { GameType } from "./types";
 
 const calcOmahaBestHand = (_pocketCards: Card[], _communityCards: Card[]) => {

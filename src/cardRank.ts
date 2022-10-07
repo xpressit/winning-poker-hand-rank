@@ -15,6 +15,9 @@ export const NOTHING = 7462;
 export const HIGH_CARD = NOTHING;
 export const INVALID = 65535;
 
+export const SIXPLUS_FLUSH = 166 + 1277;
+export const SIXPLUS_FULL_HOUSE = SIXPLUS_FLUSH + 156;
+
 const t7c5 = [
     [0, 1, 2, 3, 4, 5, 6],
     [0, 1, 2, 3, 5, 4, 6],
@@ -44,7 +47,7 @@ export type HandRank = {
     madeHand: [Card, Card, Card, Card, Card]
 }
 
-export const rankTexasHand = (hand: Card[], f: RankerFunc = cactusFastRankHand): HandRank => {
+const rank567cardHand = (hand: Card[], f: RankerFunc = cactusFastRankHand): HandRank => {
     if (hand.length === 5) {
         const rank = f([hand[0], hand[1], hand[2], hand[3], hand[4]]);
 
@@ -102,23 +105,38 @@ export const rankTexasHand = (hand: Card[], f: RankerFunc = cactusFastRankHand):
     throw new Error(`Hand ranker doesn't support ${hand.length} cards`);
 };
 
-export const rankShortDeckHand = (hand: Card[]) => {
-    const f = (hand: [Card,Card,Card,Card,Card]) => {
-        const r = cactusFastRankHand(hand);
-        // Swap full house with flush
-        switch (r) {
-            case 747: // Straight Flush, 9, 8, 7, 6, Ace
-                return 6;
-            case 6610: // Straight, 9, 8, 7, 6, Ace
-                return 1605;
-        }
-        return r;
-    };
-
-    return rankTexasHand(hand, f);
+export const rankTexasHand = (hand: Card[], f: RankerFunc = cactusFastRankHand): HandRank => {
+    return rank567cardHand(hand, f)
 };
 
-export const toFixedRank = (r: number) => {
+export const convertToSixPlusHandRank = (handRank: number): number => {
+    if (handRank === 747) {
+        handRank = 6;
+    } else if (handRank === 6610) {
+        handRank = 1605;
+    }
+
+    // Swap full_house with flush
+    const fixedRank = toFixedTexasRank(handRank);
+
+    if (fixedRank === FULL_HOUSE) {
+        handRank = handRank - FOUR_OF_A_KIND + 166 + 1277;
+    } else if(fixedRank === FLUSH) {
+        handRank = handRank - FULL_HOUSE + 166;
+    }
+    return handRank;
+}
+
+export const rankShortDeckHand = (hand: Card[]) => {
+    const f = (hand: [Card,Card,Card,Card,Card]) => {
+        const handRank = cactusFastRankHand(hand);
+        return convertToSixPlusHandRank(handRank);
+    };
+
+    return rank567cardHand(hand, f);
+};
+
+export const toFixedTexasRank = (r: number) => {
     if (r <= STRAIGHT_FLUSH) {
         return STRAIGHT_FLUSH;
     }
@@ -130,6 +148,37 @@ export const toFixedRank = (r: number) => {
     }
     if (r <= FLUSH) {
         return FLUSH;
+    }
+    if (r <= STRAIGHT) {
+        return STRAIGHT;
+    }
+    if (r <= THREE_OF_A_KIND) {
+        return THREE_OF_A_KIND;
+    }
+    if (r <= TWO_PAIR) {
+        return TWO_PAIR;
+    }
+    if (r <= PAIR) {
+        return PAIR;
+    }
+    if (r != INVALID) {
+        return NOTHING;
+    }
+    return INVALID;
+};
+
+export const toFixedSixPlusRank = (r: number) => {
+    if (r <= STRAIGHT_FLUSH) {
+        return STRAIGHT_FLUSH;
+    }
+    if (r <= FOUR_OF_A_KIND) {
+        return FOUR_OF_A_KIND;
+    }
+    if (r <= SIXPLUS_FLUSH) {
+        return SIXPLUS_FLUSH;
+    }
+    if (r <= SIXPLUS_FULL_HOUSE) {
+        return SIXPLUS_FULL_HOUSE;
     }
     if (r <= STRAIGHT) {
         return STRAIGHT;
