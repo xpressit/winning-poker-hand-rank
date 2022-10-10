@@ -18,7 +18,6 @@ jobs:
           cache: npm
           cache-dependency-path: '**/package-lock.json'
       - run: |
-          cd winning-poker-hand-rank
           npm ci
           npm run lint
           npm run tsc
