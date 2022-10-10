@@ -13,9 +13,9 @@ Winning Poker Hand Rank is a library for evaluating poker hand ranks written in 
 
 ```
 const gameType = 'texas';
-const board = '5D 8D TD AS QS';
-const player1Cards = 'TC TS';
-const player2Cards = '2D 3D';
+const board = ['5D', '8D', 'TD', 'AS', 'QS'];
+const player1Cards = ['TC', 'TS'];
+const player2Cards = ['2D', '3D'];
 
 const result = rankHands(gameType, board, [player1Cards, player2Cards]);
 ```
