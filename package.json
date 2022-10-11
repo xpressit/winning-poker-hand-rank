@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "build": "tsc",
+    "tsc": "tsc --skipLibCheck",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint src --ext .ts",
     "lint:fix": "eslint src --fix --ext .ts",
