@@ -3,7 +3,12 @@
   "version": "0.1.0",
   "description": "Determine winning poker hand rank",
   "main": "index.ts",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
+    "build": "rm ./dist/* && tsc",
     "tsc": "tsc --skipLibCheck",
     "test": "jest",
     "lint": "eslint . --ext .ts",
@@ -19,7 +24,18 @@
     "url": "https://github.com/xpressit/winning-poker-hand-rank/issues"
   },
   "homepage": "https://github.com/xpressit/winning-poker-hand-rank#readme",
-  "dependencies": {},
+  "keywords": [
+    "card",
+    "playing cards",
+    "casino",
+    "library",
+    "poker",
+    "poker hand rank",
+    "hand evaluator",
+    "rank hands",
+    "node",
+    "typescript"
+  ],
   "devDependencies": {
     "@babel/core": "^7.18.10",
     "@babel/preset-typescript": "^7.18.6",
