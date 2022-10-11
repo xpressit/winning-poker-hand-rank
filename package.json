@@ -1,5 +1,5 @@
 {
-  "name": "winning-poker-hand-rank",
+  "name": "@xpressit/winning-poker-hand-rank",
   "version": "0.1.0",
   "description": "Determine winning poker hand rank",
   "main": "index.ts",
