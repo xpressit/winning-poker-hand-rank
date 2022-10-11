@@ -40,3 +40,5 @@ export const rankHands = <T extends GameType>(
         };
     });
 };
+
+module.exports.rankHands = rankHands;
