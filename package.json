@@ -8,11 +8,10 @@
     "dist"
   ],
   "scripts": {
-    "build": "rm ./dist/* && tsc",
-    "tsc": "tsc --skipLibCheck",
-    "test": "jest",
-    "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --fix --ext .ts"
+    "build": "tsc",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --fix --ext .ts",
+    "test": "jest --config jest.config.js"
   },
   "repository": {
     "type": "git",
