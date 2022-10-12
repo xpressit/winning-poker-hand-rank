@@ -1,6 +1,6 @@
 {
   "name": "@xpressit/winning-poker-hand-rank",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Determine winning poker hand rank",
   "main": "index.ts",
   "types": "dist/index.d.ts",
