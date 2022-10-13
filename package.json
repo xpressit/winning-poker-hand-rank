@@ -1,14 +1,22 @@
 {
   "name": "@xpressit/winning-poker-hand-rank",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Determine winning poker hand rank",
-  "main": "index.ts",
-  "types": "dist/index.d.ts",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/mjs/index.mjs",
+  "types": "./dist/types/index.d.ts",
   "files": [
+    "src",
     "dist"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "rm -rf dist/* && npm run build:types && npm run build:cjs && npm run build:mjs && npm run build:node-mjs && npm run build:node-cjs",
+    "build:types": "tsc -p ./tsconfig.build.json --emitDeclarationOnly --declaration --declarationMap --declarationDir ./dist/types",
+    "build:cjs": "tsc -p ./tsconfig.build.json --target es2015 --module commonjs --outDir ./dist/cjs",
+    "build:mjs": "tsc -p ./tsconfig.build.json --target es2015 --module es2015 --outDir ./dist/mjs && mv ./dist/mjs/index.js ./dist/mjs/index.mjs",
+    "build:node-mjs": "tsc -p ./tsconfig.build.json --target es2019 --module es2015 --outDir ./dist/node-mjs && mv ./dist/node-mjs/index.js ./dist/node-mjs/index.mjs",
+    "build:node-cjs": "tsc -p ./tsconfig.build.json --target es2019 --module commonjs --outDir ./dist/node-cjs",
+    "prepack": "npm run build",
     "lint": "eslint src --ext .ts",
     "lint:fix": "eslint src --fix --ext .ts",
     "test": "jest --config jest.config.js"
@@ -36,8 +44,6 @@
     "typescript"
   ],
   "devDependencies": {
-    "@babel/core": "^7.18.10",
-    "@babel/preset-typescript": "^7.18.6",
     "@types/jest": "^28.1.6",
     "@typescript-eslint/eslint-plugin": "^5.32.0",
     "@typescript-eslint/parser": "^5.32.0",
