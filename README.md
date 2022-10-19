@@ -27,14 +27,14 @@ Output:
     {
         rank: 1875,
         combination: 'ThreeOfAKind',
-        madeHand: [ 'TC', 'TS', 'TD', 'AS', 'QS' ],
-        unused: [ '5D', '8D' ]
+        madeHand: ['TC', 'TS', 'TD', 'AS', 'QS'],
+        unused: ['5D', '8D']
     },
     {
         rank: 1531,
         combination: 'Flush',
-        madeHand: [ '2D', '3D', '5D', '8D', 'TD' ],
-        unused: [ 'AS', 'QS' ]
+        madeHand: ['2D', '3D', '5D', '8D', 'TD'],
+        unused: ['AS', 'QS']
     }
 ]
 ```
