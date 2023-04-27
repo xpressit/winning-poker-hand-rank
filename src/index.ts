@@ -17,7 +17,7 @@ type PocketCards<T = GameType> = T extends 'omaha'
 export const rankHands = <T extends GameType>(
     gameType: T,
     board: [PlayingCard, PlayingCard, PlayingCard, PlayingCard, PlayingCard],
-    hands: [PocketCards<T>],
+    hands: PocketCards<T>[],
 ): HandRank[] => {
     return hands.map((hand) => {
         const bestHand = calcBestHand(
