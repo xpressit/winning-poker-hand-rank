@@ -283,8 +283,8 @@ export const rankOmahaHand = (pocket: Card[], board: Card[], low = false): HandR
     }
     if (low && lowBestRank < EIGHT_OR_BETTER_MAX) {
         return {
-            rank: lowBestRank,
-            madeHand: lowBestHand,
+            rank: bestRank,
+            madeHand: bestHand,
             low: {
                 rank: lowBestRank,
                 madeHand: lowBestHand,
