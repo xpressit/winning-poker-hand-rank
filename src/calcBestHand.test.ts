@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { toCard } from './card';
+import { toCard, toPlayingCard } from './card';
 import {
     FLUSH,
     PAIR,
@@ -61,3 +61,18 @@ test.each([
         expect(compare(res1.rank, res2.rank)).toBe(exp);
     },
 );
+
+test.each([
+    ['TD 2C JD 4C 5C', 'AS AH 4S 3S', 'AS 3S 2C 4C 5C'],
+    ['JC 7H 6S AC TH', 'AS 3C KH JH', undefined],
+    ['8S 3C JH JD 2C', '4S 4C 7S 7H', '4S 7S 8S 3C 2C'],
+])('should calc correct omaha_hi_lo low made hand board: %s pocket: %s expected: %s', (board, player, expectedMadeHand) => {
+    const cardBoard = board.split(' ').map((c) => toCard(c as any));
+    const playerPocket = player.split(' ').map((c) => toCard(c as any));
+
+    const res = calcBestHand('omaha_hi_lo', playerPocket, cardBoard);
+
+    const resMadeLowHand = res.low?.madeHand.map((c) => toPlayingCard(c)).join(' ');
+
+    expect(resMadeLowHand).toBe(expectedMadeHand);
+});

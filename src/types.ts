@@ -52,7 +52,7 @@ export type PlayingCard =
     | '5D'
     | '5H';
 
-export type GameType = 'texas' | 'short_deck' | 'omaha';
+export type GameType = 'texas' | 'short_deck' | 'omaha' | 'omaha_hi_lo';
 
 export type Combination =
     | 'RoyalFlush'

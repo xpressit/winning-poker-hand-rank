@@ -18,6 +18,8 @@ export const INVALID = 65535;
 export const SIXPLUS_FLUSH = 166 + 1277;
 export const SIXPLUS_FULL_HOUSE = SIXPLUS_FLUSH + 156;
 
+export const EIGHT_OR_BETTER_MAX = 512;
+
 const t7c5 = [
     [0, 1, 2, 3, 4, 5, 6],
     [0, 1, 2, 3, 5, 4, 6],
@@ -45,6 +47,10 @@ const t7c5 = [
 export type HandRank = {
     rank: number;
     madeHand: [Card, Card, Card, Card, Card];
+    low?: {
+        rank: number;
+        madeHand: [Card, Card, Card, Card, Card];
+    };
 };
 
 const rank567cardHand = (hand: Card[], f: RankerFunc = cactusFastRankHand): HandRank => {
@@ -220,9 +226,36 @@ const t5c3 = [
     [2, 3, 4, 0, 1],
 ];
 
-export const rankOmahaHand = (pocket: Card[], board: Card[]): HandRank => {
+// AceRank returns the card [Ace]-low index.
+export const getAceRank = (card: Card) => {
+    // int(c>>8&0xf+1) % 13
+    return (((card >> 8) & 0xf) + 1) % 13;
+};
+
+export const rankAceFiveLow = (mask: number, hand: [Card, Card, Card, Card, Card]) => {
+    let rank = 0;
+
+    for (const card of hand) {
+        const n = getAceRank(card);
+        rank |= (1 << n) | ((((mask & (1 << n)) >>> n) & 1) * 0x8000);
+        mask |= 1 << n;
+    }
+
+    return rank;
+};
+
+// RankEightOrBetter is a 8-or-better low rank eval func. [Ace]'s are low,
+// [Straight]'s and [Flush]'s do not count.
+export const rankEightOrBetter = (hand: [Card, Card, Card, Card, Card]) => {
+    return rankAceFiveLow(0xff00, hand);
+};
+
+export const rankOmahaHand = (pocket: Card[], board: Card[], low = false): HandRank => {
     let bestHand: [Card, Card, Card, Card, Card] = [pocket[0], pocket[1], pocket[2], pocket[3], board[0]];
     let bestRank = INVALID;
+
+    let lowBestHand: [Card, Card, Card, Card, Card] = [pocket[0], pocket[1], pocket[2], pocket[3], board[0]];
+    let lowBestRank = INVALID;
 
     for (let i = 0; i < 6; i++) {
         for (let j = 0; j < 10; j++) {
@@ -239,7 +272,24 @@ export const rankOmahaHand = (pocket: Card[], board: Card[]): HandRank => {
                 bestHand = hand;
                 bestRank = rank;
             }
+            if (low) {
+                const lowRank = rankEightOrBetter(hand);
+                if (lowRank < lowBestRank) {
+                    lowBestHand = hand;
+                    lowBestRank = lowRank;
+                }
+            }
         }
+    }
+    if (low && lowBestRank < EIGHT_OR_BETTER_MAX) {
+        return {
+            rank: lowBestRank,
+            madeHand: lowBestHand,
+            low: {
+                rank: lowBestRank,
+                madeHand: lowBestHand,
+            },
+        };
     }
 
     return {
