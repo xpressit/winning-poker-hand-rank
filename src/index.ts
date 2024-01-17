@@ -8,11 +8,19 @@ type HandRank = {
     combination: Combination;
     madeHand: [PlayingCard, PlayingCard, PlayingCard, PlayingCard, PlayingCard];
     unused: PlayingCard[];
+    low?: {
+        rank: number;
+        madeHand: [PlayingCard, PlayingCard, PlayingCard, PlayingCard, PlayingCard];
+    };
 };
 
 type PocketCards<T = GameType> = T extends 'omaha'
     ? [PlayingCard, PlayingCard, PlayingCard, PlayingCard]
     : [PlayingCard, PlayingCard];
+
+const toOutputMadeHand = (madeHand: number[]) => {
+    return madeHand.map((c) => toPlayingCard(c)) as [PlayingCard, PlayingCard, PlayingCard, PlayingCard, PlayingCard];
+};
 
 export const rankHands = <T extends GameType>(
     gameType: T,
@@ -29,14 +37,9 @@ export const rankHands = <T extends GameType>(
         return {
             rank: bestHand.rank,
             combination: toCombination(gameType, bestHand.rank),
-            madeHand: bestHand.madeHand.map((c) => toPlayingCard(c)) as [
-                PlayingCard,
-                PlayingCard,
-                PlayingCard,
-                PlayingCard,
-                PlayingCard,
-            ],
+            madeHand: toOutputMadeHand(bestHand.madeHand),
             unused: bestHand.unused.map((c) => toPlayingCard(c)),
+            low: bestHand.low ? { rank: bestHand.low.rank, madeHand: toOutputMadeHand(bestHand.low.madeHand) } : undefined,
         };
     });
 };
