@@ -3,6 +3,7 @@ import { Card } from './card';
 
 type RankerFunc = (hand: [Card, Card, Card, Card, Card]) => number;
 
+export const ROYAL_FLUSH = 1;
 export const STRAIGHT_FLUSH = 10;
 export const FOUR_OF_A_KIND = 166;
 export const FULL_HOUSE = 322;
@@ -112,6 +113,9 @@ const rank567cardHand = (hand: Card[], f: RankerFunc = cactusFastRankHand): Hand
 };
 
 export const toFixedTexasRank = (r: number) => {
+    if (r === ROYAL_FLUSH) {
+        return ROYAL_FLUSH;
+    }
     if (r <= STRAIGHT_FLUSH) {
         return STRAIGHT_FLUSH;
     }
@@ -143,6 +147,9 @@ export const toFixedTexasRank = (r: number) => {
 };
 
 export const toFixedSixPlusRank = (r: number) => {
+    if (r === ROYAL_FLUSH) {
+        return ROYAL_FLUSH;
+    }
     if (r <= STRAIGHT_FLUSH) {
         return STRAIGHT_FLUSH;
     }

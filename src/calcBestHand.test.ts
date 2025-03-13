@@ -3,6 +3,7 @@ import { toCard, toPlayingCard } from './card';
 import {
     FLUSH,
     PAIR,
+    ROYAL_FLUSH,
     SIXPLUS_FLUSH,
     SIXPLUS_FULL_HOUSE,
     STRAIGHT,
@@ -22,6 +23,7 @@ test.each([
     ['short_deck', '9C 7D 8D AS QS', 'TC TS', 'AC 6S', PAIR, STRAIGHT, +1],
     ['short_deck', '9S 7S 8S AC QS', 'AS 6S', 'TC TS', STRAIGHT_FLUSH, SIXPLUS_FLUSH, -1],
     ['short_deck', '9S 7S 8S AC QS', 'TC TS', 'AS 6S', SIXPLUS_FLUSH, STRAIGHT_FLUSH, +1],
+    ['short_deck', 'TS 3H 5D KS AS', 'JS QS', 'KH QC', ROYAL_FLUSH, PAIR, -1],
     ['omaha', 'TD 2C JD 4C 5C', 'AS AH QH 3S', 'AD AC 7D 4D', STRAIGHT, PAIR, -1],
     ['omaha', 'TD 2C JD 4C 5C', 'AD AC 7D 4D', 'AS AH QH 3S', PAIR, STRAIGHT, +1],
     ['omaha', 'KC QH JC 8D 4S', 'AC TD 3H 6C', 'AH TC 2C 3C', STRAIGHT, STRAIGHT, 0],
@@ -32,6 +34,7 @@ test.each([
     ['omaha', 'TC 6C 2S 3S AS', '9H 9D 4H 4D', 'KD QS JS 8H', PAIR, FLUSH, +1],
     ['omaha', '4S 3H 6C 2D KD', 'KH QS 5H 2C', '7S 7C 4H 2S', STRAIGHT, TWO_PAIR, -1],
     ['omaha', '4S 3H 6C 2D KD', '7S 7C 4H 2S', 'KH QS 5H 2C', TWO_PAIR, STRAIGHT, +1],
+    ['omaha', 'TS 3H 5D KS AS', 'JS QS 4H 2S', 'KH QC 5H 2C', ROYAL_FLUSH, TWO_PAIR, -1],
 ])(
     'should calc correct hand strength %s, %s, %s, %s',
     (gameType, board, player1, player2, player1HandRank, player2HandRank, exp) => {
