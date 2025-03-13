@@ -4,6 +4,7 @@ import {
     FULL_HOUSE,
     HIGH_CARD,
     PAIR,
+    ROYAL_FLUSH,
     SIXPLUS_FLUSH,
     SIXPLUS_FULL_HOUSE,
     STRAIGHT,
@@ -18,6 +19,9 @@ import { Combination, GameType } from './types';
 export const toCombination = (gameType: GameType, rank: number): Combination => {
     if (gameType === 'short_deck') {
         const fixedRank = toFixedSixPlusRank(rank);
+        if (fixedRank === ROYAL_FLUSH) {
+            return 'RoyalFlush';
+        }
         if (fixedRank === STRAIGHT_FLUSH) {
             return 'StraightFlush';
         }
@@ -50,6 +54,9 @@ export const toCombination = (gameType: GameType, rank: number): Combination => 
 
     const fixedRank = toFixedTexasRank(rank);
 
+    if (fixedRank === ROYAL_FLUSH) {
+        return 'RoyalFlush';
+    }
     if (fixedRank === STRAIGHT_FLUSH) {
         return 'StraightFlush';
     }
