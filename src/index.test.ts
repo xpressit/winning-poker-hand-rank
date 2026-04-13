@@ -11,16 +11,22 @@ const inputs: Input[] = [
     ['texas', '5D 8D TD AS QS', 'TC TS', '2D 3D', 'ThreeOfAKind', 'Flush', 1],
     ['texas', 'KC QH JC TD 8D', 'AC 5H', 'AH 6C', 'Straight', 'Straight', 0],
     ['texas', 'JD 7D 8D AD QD', 'KD TD', '2D 3D', 'RoyalFlush', 'Flush', -1],
+    ['texas', 'KH JS TD 8S', '7H 4D', '2S 7C', 'HighCard', 'HighCard', 0],
+    ['texas', 'JD 7D 8D', '9D TD', '2D 3C', 'StraightFlush', 'HighCard', -1],
     ['short_deck', 'AS 7D AD 6S 6D', '8D TD', 'AC 5H', 'Flush', 'FullHouse', -1],
     ['short_deck', 'AS 7D AD 6S 6D', 'AC 5H', '8D TD', 'FullHouse', 'Flush', 1],
     ['short_deck', 'KC QH JC TD 8D', 'AC 5H', 'AH 6C', 'Straight', 'Straight', 0],
-    ['short_deck', 'KC QH JC TD 8D', 'AH 6C', 'AC 5H', 'Straight', 'Straight', 0],
+    ['short_deck', 'KC QH JC TD 8D', 'AH 6C', 'AC 7H', 'Straight', 'Straight', 0],
     ['short_deck', 'JD 7D 8D AD QD', 'KD TD', '5D 6D', 'RoyalFlush', 'Flush', -1],
+    ['short_deck', 'AS 7D AD 6S', '8D TD', 'AC 5H', 'Pair', 'ThreeOfAKind', 1],
+    ['short_deck', 'AC TD KD', 'TH AS', '6C 7H', 'TwoPair', 'HighCard', -1],
     ['omaha', 'TC 6C 2S 3S AS', 'KD QS JS 8H', '9H 9D 4H 4D', 'Flush', 'Pair', -1],
     ['omaha', 'TC 6C 2S 3S AS', '9H 9D 4H 4D', 'KD QS JS 8H', 'Pair', 'Flush', 1],
     ['omaha', '4S 3H 6C 2D KD', 'KH QS 5H 2C', '7S 7C 4H 2S', 'Straight', 'TwoPair', -1],
     ['omaha', '4S 3H 6C 2D KD', '7S 7C 4H 2S', 'KH QS 5H 2C', 'TwoPair', 'Straight', 1],
     ['omaha', 'JD 7D 8D AD QD', 'KD TD 2C 5S', '4H 5H 8C 8S', 'RoyalFlush', 'ThreeOfAKind', -1],
+    ['omaha', '6H 6S 7C KH', '5S AS 3C 4D', 'TH 5D 7S 4C', 'Pair', 'TwoPair', 1],
+    ['omaha', 'JD AD QD', 'KD TD 2C 5S', '4H 5H 8C 9S', 'RoyalFlush', 'HighCard', -1],
 ];
 
 test.each(inputs)(

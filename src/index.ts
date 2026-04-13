@@ -1,7 +1,7 @@
 import { calcBestHand } from './calcBestHand';
 import { toCard, toPlayingCard } from './card';
 import { toCombination } from './toCombination';
-import { Combination, GameType, PlayingCard } from './types';
+import { Board, Combination, GameType, PlayingCard } from './types';
 
 type HandRank = {
     rank: number;
@@ -22,11 +22,7 @@ const toOutputMadeHand = (madeHand: number[]) => {
     return madeHand.map((c) => toPlayingCard(c)) as [PlayingCard, PlayingCard, PlayingCard, PlayingCard, PlayingCard];
 };
 
-export const rankHands = <T extends GameType>(
-    gameType: T,
-    board: [PlayingCard, PlayingCard, PlayingCard, PlayingCard, PlayingCard],
-    hands: PocketCards<T>[],
-): HandRank[] => {
+export const rankHands = <T extends GameType>(gameType: T, board: Board, hands: PocketCards<T>[]): HandRank[] => {
     return hands.map((hand) => {
         const bestHand = calcBestHand(
             gameType,
