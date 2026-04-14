@@ -67,3 +67,8 @@ export type Combination =
     | 'HighCard'
     | 'Nothing'
     | 'Invalid';
+
+export type Board =
+    | [PlayingCard, PlayingCard, PlayingCard]
+    | [PlayingCard, PlayingCard, PlayingCard, PlayingCard]
+    | [PlayingCard, PlayingCard, PlayingCard, PlayingCard, PlayingCard];

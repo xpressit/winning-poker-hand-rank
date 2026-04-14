@@ -220,6 +220,15 @@ const t4c2 = [
     [2, 3, 0, 1],
 ];
 
+const t3c3 = [[0, 1, 2]];
+
+const t4c3 = [
+    [0, 1, 2, 3],
+    [1, 2, 3, 0],
+    [2, 3, 0, 1],
+    [3, 0, 1, 2],
+];
+
 const t5c3 = [
     [0, 1, 2, 3, 4],
     [0, 1, 3, 2, 4],
@@ -258,20 +267,22 @@ export const rankEightOrBetter = (hand: [Card, Card, Card, Card, Card]) => {
 };
 
 export const rankOmahaHand = (pocket: Card[], board: Card[], low = false): HandRank => {
-    let bestHand: [Card, Card, Card, Card, Card] = [pocket[0], pocket[1], pocket[2], pocket[3], board[0]];
+    let bestHand: [Card, Card, Card, Card, Card] = [pocket[0], pocket[1], board[0], board[1], board[2]];
     let bestRank = INVALID;
 
-    let lowBestHand: [Card, Card, Card, Card, Card] = [pocket[0], pocket[1], pocket[2], pocket[3], board[0]];
+    let lowBestHand: [Card, Card, Card, Card, Card] = [pocket[0], pocket[1], board[0], board[1], board[2]];
     let lowBestRank = INVALID;
 
+    const boardTable = board.length === 3 ? t3c3 : board.length === 4 ? t4c3 : t5c3;
+
     for (let i = 0; i < 6; i++) {
-        for (let j = 0; j < 10; j++) {
+        for (let j = 0; j < boardTable.length; j++) {
             const hand: [Card, Card, Card, Card, Card] = [
                 pocket[t4c2[i][0]],
                 pocket[t4c2[i][1]],
-                board[t5c3[j][0]],
-                board[t5c3[j][1]],
-                board[t5c3[j][2]],
+                board[boardTable[j][0]],
+                board[boardTable[j][1]],
+                board[boardTable[j][2]],
             ];
 
             const rank = cactusFastRankHand(hand);
